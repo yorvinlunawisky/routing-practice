@@ -1,3 +1,4 @@
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -15,14 +16,16 @@ import { ServersService } from './servers/servers.service';
 
 const appRoutes: Routes = [
   {path: '', component:  HomeComponent},
-  {path: 'users/:id/:name', component: UsersComponent, children: [
+  {path: 'users', component: UsersComponent, children: [
     {path: ':id/:name', component: UsersComponent}
   ]},
   {path: 'servers', component: ServersComponent, children: [
     {path: ':id', component: ServerComponent},
     {path: ':id/edit', component: EditServerComponent}
   ]},
-
+  //This path should be always at the end of the paths.
+    {path: 'not-found', component: PageNotFoundComponent},
+    {path: '**', redirectTo: '/not-found'}
 ];
 
 @NgModule({
@@ -33,7 +36,8 @@ const appRoutes: Routes = [
     ServersComponent,
     UserComponent,
     EditServerComponent,
-    ServerComponent
+    ServerComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
