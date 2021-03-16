@@ -1,8 +1,10 @@
+import { CanDeactivateGuard } from './servers/edit-server/can-deactivate-guard.service';
+import { AuthService } from './auth.service';
+import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router'
 
 
 import { AppComponent } from './app.component';
@@ -13,20 +15,7 @@ import { UserComponent } from './users/user/user.component';
 import { EditServerComponent } from './servers/edit-server/edit-server.component';
 import { ServerComponent } from './servers/server/server.component';
 import { ServersService } from './servers/servers.service';
-
-const appRoutes: Routes = [
-  {path: '', component:  HomeComponent},
-  {path: 'users', component: UsersComponent, children: [
-    {path: ':id/:name', component: UsersComponent}
-  ]},
-  {path: 'servers', component: ServersComponent, children: [
-    {path: ':id', component: ServerComponent},
-    {path: ':id/edit', component: EditServerComponent}
-  ]},
-  //This path should be always at the end of the paths.
-    {path: 'not-found', component: PageNotFoundComponent},
-    {path: '**', redirectTo: '/not-found'}
-];
+import { AuthGuard } from './auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -42,9 +31,10 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes)
+    AppRoutingModule,
+
   ],
-  providers: [ServersService],
+  providers: [ServersService, AuthService, AuthGuard, CanDeactivateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
